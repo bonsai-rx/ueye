@@ -9,7 +9,7 @@
     <licenseUrl>https://bitbucket.org/horizongir/bonsai.ueye/raw/8597c92974f5665680965527409eb86fe7229b11/LICENSE</licenseUrl>
     <projectUrl>https://bitbucket.org/horizongir/bonsai.ueye</projectUrl>
     <iconUrl>https://bitbucket.org/horizongir/bonsai/raw/7aacc64dc4647e57362ab310238591dc197fef0d/Resources/Bonsai.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>$author$ © 2017</copyright>
     <tags>Bonsai uEye IDS</tags>
