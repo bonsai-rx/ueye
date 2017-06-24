@@ -1,25 +1,28 @@
-﻿using OpenCV.Net;
+﻿using Bonsai;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using uEye;
 using uEye.Defines;
 using uEye.Types;
+using OpenCV.Net;
+using System.Drawing;
+using System.ComponentModel;
+using System.Drawing.Design;
 
 namespace Bonsai.uEye
 {
-    public class uEyeCamera : Source<IplImage>
+    public class uEyeCapture : Source<uEyeDataFrame>
     {
-        IObservable<IplImage> source;
+        IObservable<uEyeDataFrame> source;
 
-        public uEyeCamera()
+        public uEyeCapture()
         {
-            source = Observable.Create<IplImage>(observer =>
+            source = Observable.Create<uEyeDataFrame>(observer =>
             {
+
                 var camera = new Camera();
                 var statusRet = camera.Init();
                 HandleResult(statusRet);
@@ -64,15 +67,19 @@ namespace Bonsai.uEye
                 var channels = s32Bpp / (int)depth;
 
                 camera.EventFrame += (sender, e) =>
-                {
+                {   
                     Int32 activeMemID;
                     camera.Memory.GetActive(out activeMemID);
-
+                    
                     IntPtr imageBuffer;
                     camera.Memory.ToIntPtr(activeMemID, out imageBuffer);
+
+                    ImageInfo imageInfo;
+                    camera.Information.GetImageInfo(activeMemID, out  imageInfo);
+
                     using (var output = new IplImage(frameSize, depth, channels, imageBuffer))
                     {
-                        observer.OnNext(output.Clone());
+                        observer.OnNext(new uEyeDataFrame(output.Clone(), imageInfo));
                     }
                 };
 
@@ -107,9 +114,10 @@ namespace Bonsai.uEye
 
         public int Index { get; set; }
 
+        [Editor("Bonsai.Design.OpenFileNameEditor, Bonsai.Design", typeof(UITypeEditor))]
         public string ConfigFile { get; set; }
 
-        public override IObservable<IplImage> Generate()
+        public override IObservable<uEyeDataFrame> Generate()
         {
             return source;
         }
