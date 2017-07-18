@@ -14,4 +14,7 @@
     <copyright>$author$ © 2017</copyright>
     <tags>Bonsai uEye IDS</tags>
   </metadata>
+  <files>
+    <file src="..\Externals\uEye\uEyeDotNet.dll" target="lib\net45"/>
+  </files>
 </package>
