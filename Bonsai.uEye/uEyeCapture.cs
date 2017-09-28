@@ -60,15 +60,11 @@ namespace Bonsai.uEye
                     statusRet = camera.PixelFormat.Get(out colorMode);
                     HandleResult(statusRet);
 
-                    Rectangle rect;
-                    HandleResult(camera.Size.AOI.Get(out rect));
-                    HandleResult(camera.Size.AOI.Set(rect));
-                    statusRet = camera.Memory.Allocate();
-                    HandleResult(statusRet);
-
                     var frameSize = new OpenCV.Net.Size(frameWidth, frameHeight);
                     var depth = GetImageDepth(colorMode);
                     var channels = s32Bpp / (int)depth;
+                    statusRet = camera.Memory.Allocate();
+                    HandleResult(statusRet);
 
                     camera.EventFrame += (sender, e) =>
                     {
